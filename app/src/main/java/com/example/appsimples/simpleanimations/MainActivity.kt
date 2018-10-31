@@ -2,6 +2,7 @@ package com.example.appsimples.simpleanimations
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
@@ -16,26 +17,25 @@ class MainActivity : AppCompatActivity() {
 
         setUpListeners()
 
-        setUpImageRotation(rotateInfiniteImage)
+        setUpInfiniteRotation(rotateInfiniteImage)
 
-        setUpImageRotation(rotateInfiniteReverseImage, true)
+        setUpInfiniteRotation(rotateInfiniteReverseImage, true)
 
     }
 
-    private fun setUpImageRotation(imageView: ImageView, isReverse: Boolean = false) {
+    private fun setUpInfiniteRotation(imageView: ImageView, isReverse: Boolean = false) {
         //RotateAnimation constructor, here is possible to change rotation pivot (center of rotation)
         //In this case the center of rotation is the center of the drawable
         val rotate = RotateAnimation(
-            0F,
-            360F,
-            Animation.RELATIVE_TO_SELF,
-            0.5f,
-            Animation.RELATIVE_TO_SELF,
-            0.5F
+                0F,
+                360F,
+                Animation.RELATIVE_TO_SELF,
+                0.5f,
+                Animation.RELATIVE_TO_SELF,
+                0.5F
         )
         rotate.duration = 2000                      //animation duration in milli seconds
-        rotate.interpolator =
-                LinearInterpolator()  //Interpolator to control animation style, see interpolator types for more info
+        rotate.interpolator = LinearInterpolator()  //Interpolator to control animation style, see interpolator types for more info
         rotate.repeatCount = Animation.INFINITE     //How many times repeat animation
         if (isReverse) {
             rotate.repeatMode = Animation.REVERSE   //Reverse animation on every cycle
@@ -45,11 +45,29 @@ class MainActivity : AppCompatActivity() {
         imageView.startAnimation(rotate)
     }
 
+    private fun onRotateView(view: View) {
+        val rotate = RotateAnimation(
+                0F,
+                180F,                   //180 degree rotation
+                Animation.RELATIVE_TO_SELF,
+                0.5f,
+                Animation.RELATIVE_TO_SELF,
+                0.5F
+        )
+        rotate.duration = 450
+        rotate.interpolator = LinearInterpolator()
+        view.startAnimation(rotate)
+    }
+
     private fun setUpListeners() {
         //JUST TO INCREASE CLICK AREA, click listener is on FrameLayout
         simpleLikeContainer.setOnClickListener {
             simpleLikeButton.isChecked = !simpleLikeButton.isChecked
             //do your button action here
+        }
+
+        rotateButton.setOnClickListener {
+            onRotateView(rotateButton)
         }
     }
 }
